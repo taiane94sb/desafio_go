@@ -6,10 +6,12 @@ ADD . /app
 
 WORKDIR /app
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o main ./...
+RUN go build -o /app/main .
 
-FROM alpine:latest AS builder2
+FROM scratch AS builder2
 
-COPY --from=builder1 /app .
+WORKDIR /app
+
+COPY --from=builder1 /app/main ./main
 
 CMD ["./main"]
